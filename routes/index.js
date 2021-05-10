@@ -1,13 +1,15 @@
 const express = require('express');
 
-const router = express.Router();
-const homeController = require('../controllers/home_controller');
+const router = express.Router();        //Call and initialize the Router() method from express
+const homeController = require('../controllers/home_controller');   //To import and initialize the actions in home_controller
 
 
+//Print message on console to confirm the router has loaded
 console.log('Router loaded');
 
-router.get('/', homeController.home);
+//call the respective actions using the methods in views
+router.get('/', homeController.home);   
 router.use('/users', require('./users'));
 router.use('/users/posts', require('./users'));
 
-module.exports = router;
+module.exports = router;    //Export the router object

@@ -1,3 +1,4 @@
 node_modules/
 controllers/posts_controller.js
 views/posts.ejs
+Steps.txt
