@@ -3,24 +3,61 @@ const User = require('../models/user');         //Import User Model to use in th
 
 //Create an action for the users profile page
 module.exports.profile = function(req, res){
-    return res.render('user_profile', {
-        'title': 'Profile Page'
-    });
+
+    if(req.cookies.user_id){
+
+        User.findById(req.cookies.user_id, function(err, user){
+            if(user){
+    
+                return res.render('user_profile', {
+                    title: 'Profile Page',
+                    user: user
+                });
+            }
+            else{
+                return res.redirect('/users/sign-in');
+            }
+        });
+
+    }else{
+        return res.redirect('/users/sign-in');
+    }
+
 }
 
 
 //Action for the signUp page
 module.exports.signUp = function(req, res){
     return res.render('user_sign_up', {
-        'title': 'Codeial | Sign Up'
+        title: 'Codeial | Sign Up'
     });
 }
 
 //Action for the signIn page
 module.exports.signIn = function(req, res){
-    return res.render('user_sign_in', {
-        'title': 'Codeial | Sign In'
-    });
+
+    if(req.cookies.user_id){
+
+        User.findById(req.cookies.user_id, function(err, user){
+
+            if(user){
+
+                return res.render('user_profile', {
+                    title: 'Profile Page',
+                    user: user
+                });
+            }else{
+
+                return res.render('user_sign_in', {
+                    title: 'Codeial | Sign In'
+                });
+            }
+        });
+    }else{
+        return res.render('user_sign_in', {
+            title: 'Codeial | Sign In'
+        });
+    }
 }
 
 
@@ -57,4 +94,52 @@ module.exports.create = function(req, res){
 
 
 
-//sign in and create a session
+//Sign in and create a Session
+module.exports.createSession = function(req, res){
+    //Authentication Steps
+
+    //Find the User
+    User.findOne({email: req.body.email}, function(err, user){
+
+        //Handle User Found
+        if(user){
+
+            //Handle password which doesn't match
+            if(user.password != req.body.password){
+
+                return res.redirect('back');
+
+            }
+
+            //Create a Session if password matches
+            res.cookie('user_id', user.id);
+            return res.render('user_profile', {
+                title: 'Profile Page',
+                user: user
+            });
+
+        }
+
+        //Handle User not Found
+        else{
+            res.redirect('back');
+        }
+        
+    });
+
+}
+
+
+//Sign Out and delete cookie
+module.exports.deleteSession = function(req, res){
+
+    if(req.cookies.user_id){
+
+       res.clearCookie('user_id');
+       return res.redirect('/users/sign-in');
+
+    }else{
+
+        return res.redirect('/users/sign-in');
+    }
+}

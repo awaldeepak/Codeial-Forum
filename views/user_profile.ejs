@@ -1,2 +1,12 @@
 <link rel="stylesheet" href="/css/user_profile.css">
 <h1>User <%= title %></h1>
+
+
+<p>Name     : <%= user.name %></p>
+<p>Email ID : <%= user.email %></p>
+<p>CreatedAt: <%= user.createdAt %></p>
+<p>UpdatedAt: <%= user.updatedAt %></p>
+
+<form action="/users/delete-session" method="POST">
+    <input type="submit" value="Sign Out">
+</form>
