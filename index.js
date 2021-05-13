@@ -1,23 +1,57 @@
 //Import required Libraries
 const express = require('express');                     //For ExpressJS
+const cookieParser = require('cookie-parser');          //To handle cookies
 const app = express();                                  //Calling Express JS
 const port = 8000;
 const expressLayouts = require('express-ejs-layouts');  //To create Layouts in Express
 const db = require('./config/mongoose');                //To include mongoose db conncetion file
-const cookieParser = require('cookie-parser');          //To handle cookies
+//Used for session cookie management
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passport-local-strategy');
+const MongoStore = require('connect-mongo');
 
 
 app.use(express.urlencoded());                          //For extracting the values in url of POST method
 app.use(cookieParser());
-app.use(expressLayouts);
 app.use(express.static('./assets'));                    //For accessing the CSS, JS and Images in assets folder
-app.use('/', require('./routes'));                      //For routing to the different urls
 
+
+app.use(expressLayouts);
+app.set('layout extractStyles', true);                  //Set to extract the CSS file in layouts from the respecive ejs files
+app.set('layout extractScripts', true);                 //Set to extract the JS file in layouts from the respecive ejs files
 
 app.set('view engine', 'ejs');                          //Set default view engine as EJS
 app.set('views', './views');                            //To indicate the bowser to look to views folder for the front-end
-app.set('layout extractStyles', true);                  //Set to extract the CSS file in layouts from the respecive ejs files
-app.set('layout extractScripts', true);                 //Set to extract the JS file in layouts from the respecive ejs files
+
+
+app.use(session({
+    name: 'codeial',
+    //TODO change the secret before deployment in production mode
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (1000 * 60 * 100)
+    },
+    store: MongoStore.create(
+        {
+            mongoUrl: 'mongodb://localhost/codeial_development',
+            autoRemove: 'disabled'
+        },
+        function(err){
+            console.log(err || 'conncet-mongodb ok');
+        })
+}));
+
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(passport.setAuthenticatedUser);
+
+
+app.use('/', require('./routes'));                      //For routing to the different urls
 
 
 //To start the server at mentioned PORT
