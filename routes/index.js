@@ -10,6 +10,7 @@ console.log('Router loaded');
 //call the respective actions using the methods in views
 router.get('/', homeController.home);   
 router.use('/users', require('./users'));
-router.use('/users/posts', require('./users'));
+router.use('/posts', require('./posts'));
+
 
 module.exports = router;    //Export the router object
