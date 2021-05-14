@@ -1,0 +1,13 @@
+#footer-container {
+  color: white;
+  background-color: grey;
+  padding: 5px 10px;
+  display: flex;
+  justify-content: flex-start; }
+  #footer-container a {
+    color: white;
+    text-decoration: none; }
+    #footer-container a:hover {
+      color: blue; }
+  #footer-container nav ul {
+    list-style: none; }

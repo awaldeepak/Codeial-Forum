@@ -1,0 +1,53 @@
+#header-container {
+
+    nav {
+        font-family: sans-serif;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        background-color: #2196f3;
+        color: white;
+        box-shadow: 1px 1px 1px 1px lightgray;
+
+        .header-logo {
+
+            p {
+                margin: 5px;
+                
+                font-size: 1.4rem;
+                font-weight: bold;               
+            }
+        }
+
+        .header-content {
+
+            ul {
+
+                margin: 5% 5px;
+                display: flex;
+                list-style: none;
+
+                li {
+                    margin-right: 10px;
+
+                    &:hover {
+                        color: orange;
+                    }
+                }
+            }
+        }
+
+        a {
+            color: white;
+            text-decoration: none;
+
+            &:hover {
+
+                color: yellow;
+            }
+        }
+
+    }
+
+    
+}

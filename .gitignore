@@ -2,3 +2,5 @@ node_modules/
 controllers/posts_controller.js
 views/posts.ejs
 Steps.txt
+views/sign-up.ejs
+views/sign_in.ejs

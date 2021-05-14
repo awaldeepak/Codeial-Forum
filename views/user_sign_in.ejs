@@ -1,17 +1,24 @@
-<h1>Sign In</h1>
-        
-<form action="/users/create-session" method="POST">
+<link rel="stylesheet" href="/css/user_sign_up.css">
 
-    <label for="username">Username</label>
-    <input type="text" name="username" placeholder="Email" required>
-
-    <br>
-
-    <label for="password">Password</label>
-    <input type="password" name="password" placeholder="Password" required>
-
-    <br>
-
-    <input type="submit" value="Sign In">
-
-</form>
+<div class="signup-form">
+    <form action="/users/create-session" method="POST">
+		<h2>Sign In</h2>
+		<p>Please fill in this form to access your profile</p>
+		<hr>
+        <div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
+				<input type="email" class="form-control" name="username" placeholder="Email Address" required="required">
+			</div>
+        </div>
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+				<input type="password" class="form-control" name="password" placeholder="Password" required="required">
+			</div>
+        </div>
+		<div class="form-group">
+            <button type="submit" class="btn btn-primary btn-lg">Sign In</button>
+        </div>
+    </form>
+</div>

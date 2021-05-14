@@ -1,0 +1,25 @@
+#footer-container {
+
+    color: white;
+
+    a {
+        color: white;
+        text-decoration: none;
+
+        &:hover {
+            color: blue;
+        }
+    }
+
+    background-color: grey;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: flex-start;
+
+    nav {
+        ul {
+            list-style: none;
+        }
+    }
+
+}
