@@ -1,6 +1,5 @@
 const Post = require('../models/post');
 
-
 module.exports.createPost = function(req, res){
 
     Post.create({
@@ -14,6 +13,6 @@ module.exports.createPost = function(req, res){
         }
 
         return res.redirect('back');
-    })
+    });
    
 }
