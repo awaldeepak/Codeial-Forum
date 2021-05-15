@@ -2,6 +2,6 @@ body {
   margin: 0; }
   body #layout-main {
     height: 100%;
-    color: #fff;
     background: #19aa8d;
-    font-family: 'Roboto', sans-serif; }
+    font-family: 'Roboto', sans-serif;
+    color: black; }
