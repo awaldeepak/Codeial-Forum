@@ -3,11 +3,39 @@ const User = require('../models/user');         //Import User Model to use in th
 
 //Create an action for the users profile page
 module.exports.profile = function(req, res){
-    return res.render('user_profile', {
-        'title': 'Profile Page'
-    });
+
+    if(req.isAuthenticated()){
+        User.findById(req.params.id, function(err, user){
+            if(err){ console.log('Error in fetching user'); return; }
+
+                return res.render('user_profile', {
+                    title: 'Profile Page',
+                    profile_user: user
+                });
+        });
+
+    } else {
+        return res.render('user_sign_in', {
+            title: 'Codeial | Sign In'
+        });
+    }
+   
 }
 
+//Action to update the user profile
+module.exports.update = function(req, res){
+    if(req.user.id == req.params.id){
+
+        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+            if(err){ console.log('Error in updating user'); return; }
+
+            return res.redirect('back');
+        });
+    } else {
+
+        return res.status(401, 'UnAuthorized');
+    }
+}
 
 //Action for the signUp page
 module.exports.signUp = function(req, res){
@@ -18,7 +46,7 @@ module.exports.signUp = function(req, res){
     }
 
     return res.render('user_sign_up', {
-        'title': 'Codeial | Sign Up'
+        title: 'Codeial | Sign Up'
     });
 }
 
@@ -31,7 +59,7 @@ module.exports.signIn = function(req, res){
     }
 
     return res.render('user_sign_in', {
-        'title': 'Codeial | Sign In'
+        title: 'Codeial | Sign In'
     });
 }
 

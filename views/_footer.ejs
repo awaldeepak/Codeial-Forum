@@ -12,7 +12,14 @@
                     <a href="/">Home</a>
                 </li>
                 <li>
-                    <a href="/users/profile">Profile</a>
+                    <!-- If user is signed in and wants to view his own profile page -->
+                    <% if(locals.user) { %>
+                        <a href="/users/profile/<%= locals.user.id %>">Profile</a>
+                    
+                        <!-- If user is signed out or not signed in and wants to view his own profile page -->
+                    <% } else { %>
+                        <a href="/users/profile/<%= 1 %>">Profile</a>
+                    <% } %>
                 </li>
             </ul>
         </nav>

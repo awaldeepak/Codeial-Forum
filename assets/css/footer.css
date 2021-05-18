@@ -1,5 +1,6 @@
 #footer-container {
   color: white;
+  position: sticky;
   background-color: grey;
   padding: 5px 10px;
   display: flex;
