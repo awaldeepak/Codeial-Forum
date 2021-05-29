@@ -6,7 +6,7 @@ module.exports.profile = function(req, res){
 
     if(req.isAuthenticated()){
         User.findById(req.params.id, function(err, user){
-            if(err){ console.log('Error in fetching user'); return; }
+            if(err){ req.flash('error', err); return res.redirect('back'); }
 
                 return res.render('user_profile', {
                     title: 'Profile Page',
@@ -28,7 +28,7 @@ module.exports.update = function(req, res){
 
         User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
             if(err){ console.log('Error in updating user'); return; }
-
+            req.flash('success', 'Details updated');
             return res.redirect('back');
         });
     } else {
@@ -70,6 +70,7 @@ module.exports.create = async function(req, res){
     try{
         //If password is not matching with confirm password
         if(req.body.password != req.body.confirm_password){
+            req.flash('error', 'Confirm Password doesn\'t match');
             return res.redirect('back');
         }
 
@@ -79,17 +80,19 @@ module.exports.create = async function(req, res){
         //If Entered email user is not available in User Model then create that user and redirect to sign-in page
         if(!user){
             await User.create(req.body);
+            req.flash('success', 'Your account created! Please Sign In!');
             return res.redirect('/users/sign-in');
         }
 
         //If entered email user is already exists then redirect to previous page
         else{
+            req.flash('error', 'User already exists');
             return res.redirect('back');
         }
         
     } catch(err) {
-        console.log("Error: ", err);
-        return;
+        req.flash('error', err);
+        return res.redirect('back');
     }
 }
 
