@@ -65,34 +65,32 @@ module.exports.signIn = function(req, res){
 
 
 //Get the Sign Up data and proceed with it.
-module.exports.create = function(req, res){
+module.exports.create = async function(req, res){
 
-    //If password is not matching with confirm password
-    if(req.body.password != req.body.confirm_password){
-        return res.redirect('back');
-    }
+    try{
+        //If password is not matching with confirm password
+        if(req.body.password != req.body.confirm_password){
+            return res.redirect('back');
+        }
 
-    //If password matches with confirm password, then find email to preceed with actions
-    User.findOne({email: req.body.email}, function(err, user){
-        
-        if(err){ console.log('Error in finding user in signing up'); return; }
+        //If password matches with confirm password, then find email to preceed with actions
+        let user = await User.findOne({email: req.body.email});
 
         //If Entered email user is not available in User Model then create that user and redirect to sign-in page
         if(!user){
-            User.create(req.body, function(err, user){
-
-                if(err){ console.log('Error in creating user while signing up'); return; }
-
-                return res.redirect('/users/sign-in');
-            });
-            
+            await User.create(req.body);
+            return res.redirect('/users/sign-in');
         }
 
         //If entered email user is already exists then redirect to previous page
         else{
             return res.redirect('back');
         }
-    });
+        
+    } catch(err) {
+        console.log("Error: ", err);
+        return;
+    }
 }
 
 
