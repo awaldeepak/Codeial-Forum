@@ -1,5 +1,6 @@
 const User = require('../models/user');         //Import User Model to use in the actions
-
+const fs = require('fs');
+const path = require('path');
 
 //Create an action for the users profile page
 module.exports.profile = function(req, res){
@@ -23,18 +24,54 @@ module.exports.profile = function(req, res){
 }
 
 //Action to update the user profile
-module.exports.update = function(req, res){
+module.exports.update = async function(req, res){
+    // if(req.user.id == req.params.id){
+
+    //     User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
+    //         if(err){ console.log('Error in updating user'); return; }
+    //         req.flash('success', 'Details updated');
+    //         return res.redirect('back');
+    //     });
+    // } else {
+
+    //     return res.status(401, 'UnAuthorized');
+    // }
+
     if(req.user.id == req.params.id){
+    
+        try{
+            
+            let user = await User.findById(req.params.id);
+            User.uploadedAvatar(req, res, function(err){
+                if(err){console.log("*****Multer Error", err);}
 
-        User.findByIdAndUpdate(req.params.id, req.body, function(err, user){
-            if(err){ console.log('Error in updating user'); return; }
-            req.flash('success', 'Details updated');
+                user.name = req.body.name;
+                user.email = req.body.email;
+
+                if(req.file){
+
+                    if(user.name){
+                        fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+                    }
+
+                    //This is the saving path of the uploaded file into the avatar field in th user
+                    user.avatar = User.avatarPath + '/' +req.file.filename;
+                }
+                user.save();
+                req.flash('success', 'Details updated');
+                return res.redirect('back');
+            });
+
+        } catch(err) {
+            req.flash('error', err);
             return res.redirect('back');
-        });
-    } else {
+        }
 
+    } else {
+        req.flash('error', 'UnAuthorized');
         return res.status(401, 'UnAuthorized');
     }
+
 }
 
 //Action for the signUp page

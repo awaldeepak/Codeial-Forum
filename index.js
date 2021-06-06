@@ -26,7 +26,7 @@ app.use(express.urlencoded());                          //For extracting the val
 app.use(cookieParser());
 app.use(express.static('./assets'));                    //For accessing the CSS, JS and Images in assets folder
 
-
+app.use('/uploads', express.static(__dirname + '/uploads'));    //Make the uploads folder available to the browser
 app.use(expressLayouts);
 app.set('layout extractStyles', true);                  //Set to extract the CSS file in layouts from the respecive ejs files
 app.set('layout extractScripts', true);                 //Set to extract the JS file in layouts from the respecive ejs files

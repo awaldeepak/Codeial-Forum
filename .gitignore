@@ -4,3 +4,5 @@ views/sign-up.ejs
 views/sign_in.ejs
 views/home_1.ejs
 assets/css/home_1.css
+routes/api/
+controllers/api/
